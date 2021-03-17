@@ -1,0 +1,180 @@
+{
+  "basePath": "http://localhost:8080",
+  "paths": [
+    {
+      "method": "GET",
+      "path": "/weather",
+      "responses": [
+        {
+          "code": 200,
+          "body": {
+            "coord": {
+              "lon": -0.1257,
+              "lat": 51.5085
+            },
+            "weather": [
+              {
+                "id": 801,
+                "main": "Clouds",
+                "description": "few clouds",
+                "icon": "02d"
+              }
+            ],
+            "base": "stations",
+            "main": {
+              "temp": 282.31,
+              "feels_like": 278.7,
+              "temp_min": 281.15,
+              "temp_max": 283.15,
+              "pressure": 1032,
+              "humidity": 76
+            },
+            "visibility": 10000,
+            "wind": {
+              "speed": 3.6,
+              "deg": 0
+            },
+            "clouds": {
+              "all": 20
+            },
+            "dt": 1615992435,
+            "sys": {
+              "type": 1,
+              "id": 1414,
+              "country": "GB",
+              "sunrise": 1615961393,
+              "sunset": 1616004470
+            },
+            "timezone": 0,
+            "id": 2643743,
+            "name": "London",
+            "cod": 200
+          }
+        }
+      ],
+      "parameters": [
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer",
+          "description": "The collection page number"
+        },
+        {
+          "name": "perPage",
+          "in": "query",
+          "required": false,
+          "type": "integer",
+          "description": "The number of items per page"
+        }
+      ]
+    },
+    {
+      "method": "GET",
+      "path": "/find",
+      "responses": [
+        {
+          "code": 200,
+          "body": {
+            "message": "accurate",
+            "cod": "200",
+            "count": 2,
+            "list": [
+              {
+                "id": 2643743,
+                "name": "London",
+                "coord": {
+                  "lat": 51.5085,
+                  "lon": -0.1257,
+                  "lonasd": -0.1257
+                },
+                "main": {
+                  "temp": 282.32,
+                  "feels_like": 278.52,
+                  "temp_min": 281.15,
+                  "temp_max": 283.15,
+                  "pressure": 1033,
+                  "humidity": 71
+                },
+                "dt": 1615993779,
+                "wind": {
+                  "speed": 3.6,
+                  "deg": 340
+                },
+                "sys": {
+                  "country": "GB"
+                },
+                "rain": null,
+                "snow": null,
+                "clouds": {
+                  "all": 40
+                },
+                "weather": [
+                  {
+                    "id": 802,
+                    "main": "Clouds",
+                    "description": "scattered clouds",
+                    "icon": "03d"
+                  }
+                ]
+              },
+              {
+                "id": 6058560,
+                "name": "London",
+                "coord": {
+                  "lat": 42.9834,
+                  "lon": -81.233
+                },
+                "main": {
+                  "temp": 279.09,
+                  "feels_like": 275.95,
+                  "temp_min": 276.15,
+                  "temp_max": 280.37,
+                  "pressure": 1019,
+                  "humidity": 75
+                },
+                "dt": 1615993751,
+                "wind": {
+                  "speed": 2.06,
+                  "deg": 120
+                },
+                "sys": {
+                  "country": "CA"
+                },
+                "rain": null,
+                "snow": null,
+                "clouds": {
+                  "all": 40
+                },
+                "weather": [
+                  {
+                    "id": 802,
+                    "main": "Clouds",
+                    "description": "scattered clouds",
+                    "icon": "03d"
+                  }
+                ]
+              }
+            ]
+          }
+        }
+      ],
+      "parameters": [
+        {
+          "name": "page",
+          "in": "query",
+          "required": false,
+          "type": "integer",
+          "description": "The collection page number"
+        },
+        {
+          "name": "perPage",
+          "in": "query",
+          "required": false,
+          "type": "integer",
+          "description": "The number of items per page"
+        }
+      ]
+    }
+  ]
+}
