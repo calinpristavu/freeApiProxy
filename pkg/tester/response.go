@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"io"
 	"net/http"
+	"sync"
 
 	"github.com/calinpristavu/freeApiProxy/pkg/jsonCompare"
 	"github.com/sirupsen/logrus"
@@ -51,7 +52,8 @@ func (rb responseBody) matchesResponse(response io.ReadCloser) bool {
 	return true
 }
 
-func (p path) test(basePath string) {
+func (p path) test(basePath string, wg *sync.WaitGroup) {
+	defer wg.Done()
 	request, err := http.NewRequest(p.Method, basePath+p.Path, nil)
 
 	if err != nil {
@@ -74,6 +76,16 @@ func (p path) test(basePath string) {
 
 	defer res.Body.Close()
 
+	if res.StatusCode != p.Responses[0].Code {
+		logrus.WithFields(logrus.Fields{
+			"response": res,
+			"expectedCode": p.Responses[0].Code,
+			"actualCode": res.StatusCode,
+		}).Error("request failed")
+
+		return
+	}
+
 	if p.Responses[0].Body.matchesResponse(res.Body) {
 		logrus.WithFields(logrus.Fields{
 			"path": p.Path,
@@ -82,7 +94,13 @@ func (p path) test(basePath string) {
 }
 
 func (rs requestSet) testAll() {
+	var wg sync.WaitGroup
+
+	wg.Add(len(rs.Paths))
+
 	for _, p := range rs.Paths {
-		p.test(rs.BasePath)
+		go p.test(rs.BasePath, &wg)
 	}
+
+	wg.Wait()
 }

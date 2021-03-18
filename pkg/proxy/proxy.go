@@ -97,6 +97,17 @@ func handleFindRequest(w http.ResponseWriter, r *http.Request) {
 func performRequest(w http.ResponseWriter, req *http.Request) {
 	res, _ := http.DefaultClient.Do(req)
 
+	if res.StatusCode != 200 {
+		logrus.WithFields(logrus.Fields{
+			"request": req,
+			"respons": res,
+		}).Error("received status code != 200")
+
+		w.WriteHeader(res.StatusCode)
+
+		return
+	}
+
 	defer func() {
 		if err := res.Body.Close(); err != nil {
 			logrus.WithFields(logrus.Fields{
