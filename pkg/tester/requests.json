@@ -3,7 +3,7 @@
   "paths": [
     {
       "method": "GET",
-      "path": "/weather",
+      "path": "/weather?q=London%2Cuk&lat=0&lon=0&id=2172797&lang=null&units=%22metric%22%20or%20%22imperial%22&mode=xml%2C%20html",
       "responses": [
         {
           "code": 200,
@@ -71,7 +71,7 @@
     },
     {
       "method": "GET",
-      "path": "/find",
+      "path": "/find?q=london&cnt=2&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=imperial%2C%20metric",
       "responses": [
         {
           "code": 200,

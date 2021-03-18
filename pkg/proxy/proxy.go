@@ -12,11 +12,33 @@ import (
 )
 
 func Boot(srv *server.Server) {
-	srv.Router.Methods("GET").Path("/weather").HandlerFunc(handleWeatherRequest)
-	srv.Router.Methods("GET").Path("/find").HandlerFunc(handleFindRequest)
+	srv.Router.Path("/weather").
+		Methods("GET").
+		Queries(
+			"q", "",
+			"lat", "{lat:[0-9]+}",
+			"lon", "{lon:[0-9]+}",
+			"lang", "",
+			"units", "",
+			"mode", "",
+		).
+		HandlerFunc(handleWeatherRequest)
+
+	srv.Router.Path("/find").
+		Methods("GET").
+		Queries(
+			"q", "",
+			"cnt", "{cnt:[0-9]+}",
+			"mode", "",
+			"lat", "{lat:[0-9]+}",
+			"lon", "{lon:[0-9]+}",
+			"type", "",
+			"units", "",
+		).
+		HandlerFunc(handleFindRequest)
 }
 
-const baseUrl = "https://community-open-weather-map.p.rapidapi.com/"
+const baseUrl = "https://community-open-weather-map.p.rapidapi.com"
 
 var credentials = struct {
 	key  string
@@ -40,12 +62,14 @@ func init() {
 	credentials.host = os.Getenv("X-RAPIDAPI-HOST")
 }
 
-func handleWeatherRequest(w http.ResponseWriter, _ *http.Request) {
+func handleWeatherRequest(w http.ResponseWriter, r *http.Request) {
 	req, _ := http.NewRequest(
 		"GET",
-		baseUrl+"weather?q=London%2Cuk&lat=0&lon=0&id=2172797&lang=null&units=%22metric%22%20or%20%22imperial%22&mode=xml%2C%20html",
+		fmt.Sprintf("%s/weather?%s", baseUrl, r.URL.RawQuery),
 		nil,
 	)
+
+	req.URL.Query().Encode()
 
 	logrus.WithFields(logrus.Fields{
 		"req": req,
@@ -57,15 +81,15 @@ func handleWeatherRequest(w http.ResponseWriter, _ *http.Request) {
 	performRequest(w, req)
 }
 
-func handleFindRequest(w http.ResponseWriter, _ *http.Request) {
+func handleFindRequest(w http.ResponseWriter, r *http.Request) {
 	req, _ := http.NewRequest(
 		"GET",
-		baseUrl+"/find?q=london&cnt=2&mode=null&lon=0&type=link%2C%20accurate&lat=0&units=imperial%2C%20metric",
+		fmt.Sprintf("%s/find?%s", baseUrl, r.URL.RawQuery),
 		nil,
 	)
 
-	req.Header.Add("x-rapidapi-key", "dadb941facmsh19814c5df2350f9p1eacd3jsne11fcea3b143")
-	req.Header.Add("x-rapidapi-host", "community-open-weather-map.p.rapidapi.com")
+	req.Header.Add("x-rapidapi-key", credentials.key)
+	req.Header.Add("x-rapidapi-host", credentials.host)
 
 	performRequest(w, req)
 }
