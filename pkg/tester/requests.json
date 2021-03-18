@@ -85,8 +85,7 @@
                 "name": "London",
                 "coord": {
                   "lat": 51.5085,
-                  "lon": -0.1257,
-                  "lonasd": -0.1257
+                  "lon": -0.1257
                 },
                 "main": {
                   "temp": 282.32,
